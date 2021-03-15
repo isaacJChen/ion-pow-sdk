@@ -2,12 +2,13 @@
   "name": "ion-pow-sdk",
   "version": "1.0.0",
   "description": "sdk to perform proof of work for ION",
-  "main": "index.js",
+  "private": true,
   "directories": {
     "lib": "lib"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
   },
   "repository": {
     "type": "git",
@@ -20,7 +21,14 @@
   },
   "homepage": "https://github.com/isaacJChen/ion-pow-sdk#readme",
   "dependencies": {
+    "buffer": "^6.0.3",
     "hash-wasm": "4.4.1",
     "node-fetch": "2.6.1"
+  },
+  "devDependencies": {
+    "@decentralized-identity/ion-sdk": "^0.4.1",
+    "http-server": "0.12.3",
+    "webpack": "^5.26.0",
+    "webpack-cli": "^4.5.0"
   }
 }

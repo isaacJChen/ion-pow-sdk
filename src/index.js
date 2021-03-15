@@ -1,13 +1,16 @@
-// import * as fetch from 'node-fetch';
-// import * as hash from  'hash-wasm';
-const fetch = require('node-fetch')
-const hash = require('hash-wasm')
+import * as fetch from 'node-fetch/browser';
+import * as hash from  'hash-wasm';
+
+
+const buffer = require('buffer/').Buffer;
+// const fetch = require('node-fetch')
+// const hash = require('hash-wasm')
 
 class IonProofOfWork {
     static randomHexString() {
         const size = Math.floor(Math.random() * Math.floor(500));
         const randomString = [...Array(size)].map(() => Math.floor(Math.random() * 16).toString(16)).join('');
-        return Buffer.from(randomString).toString('hex');
+        return buffer.from(randomString).toString('hex');
     }
 
     static async submitIonRequestUntilSuccess(getChallengeUri, solveChallengeUri, requestBody) {
@@ -24,6 +27,7 @@ class IonProofOfWork {
             throw new Error('Get challenge service not available')
         }
         const challengeBody = await getChallengeResponse.json();
+        console.log(challengeBody);
 
         const challengeNonce = challengeBody.challengeNonce;
         const largestAllowedHash = challengeBody.largestAllowedHash;
@@ -37,8 +41,8 @@ class IonProofOfWork {
         do {
             answerNonce = this.randomHexString();
             answerHash = await hash.argon2id({
-                password: Buffer.from(answerNonce, 'hex').toString() + requestBody,
-                salt: Buffer.from(challengeNonce, 'hex'),
+                password: buffer.from(answerNonce, 'hex').toString() + requestBody,
+                salt: buffer.from(challengeNonce, 'hex'),
                 parallelism: 1,
                 iterations: 1,
                 memorySize: 1000,
@@ -53,10 +57,12 @@ class IonProofOfWork {
             return;
         }
 
+        console.log('3')
         const response = await fetch(solveChallengeUri, {
             method: 'POST',
             body: requestBody,
             headers: {
+                'access-control-allow-headers': '*',
                 'challenge-nonce': challengeNonce,
                 'answer-nonce': answerNonce,
                 'content-type': 'application/json'
@@ -80,3 +86,46 @@ class IonProofOfWork {
         };
     }
 }
+
+
+const body = {
+    "type": "create",
+    "suffixData": {
+      "deltaHash": "EiCLyPswSvuw986FoTQd4jZ-Qv_pg1N07-DtoY0v6NmSfg",
+      "recoveryCommitment": "EiB27xMKUNiMuHKtUvVrpXcZP5dGgABqRHNN-HSH4_K9Gw"
+    },
+    "delta": {
+      "updateCommitment": "EiCQ2-uDv1_j5BhcmnM7p96E02CbIJaqT3QFtjCAy8K_Iw",
+      "patches": [
+        {
+          "action": "replace",
+          "document": {
+            "publicKeys": [
+              {
+                "id": "integrationTestKey",
+                "type": "EcdsaSecp256k1VerificationKey2019",
+                "publicKeyJwk": {
+                  "kty": "EC",
+                  "crv": "secp256k1",
+                  "x": "RylkQeOBYJVpRdZ7YSPKHFD4DWIcFCD9NfBPSTX3rio",
+                  "y": "nst5yUGomljMpWqzxWP3eKC02RrMfdd3elphTktInUQ"
+                },
+                "purposes": [
+                  "authentication"
+                ]
+              }
+            ],
+            "services": [
+              {
+                "id": "integrationTestService",
+                "type": "website",
+                "serviceEndpoint": "https://www.some.web.site.com"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+
+IonProofOfWork.submitIonRequestUntilSuccess('https://beta.ion.msidentity.com/api/v1.0/proof-of-work-challenge', 'https://beta.ion.msidentity.com/api/v1.0/register', JSON.stringify(body));
