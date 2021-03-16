@@ -4,7 +4,7 @@ const hash =  require('hash-wasm');
 
 const buffer = require('buffer/').Buffer;
 
-class IonProofOfWork {
+module.exports = class IonProofOfWork {
     static randomHexString() {
         const size = Math.floor(Math.random() * Math.floor(500));
         const randomString = [...Array(size)].map(() => Math.floor(Math.random() * 16).toString(16)).join('');
@@ -83,5 +83,3 @@ class IonProofOfWork {
         };
     }
 }
-
-export { IonProofOfWork };
