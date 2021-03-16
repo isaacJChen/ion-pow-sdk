@@ -6,7 +6,7 @@ const buffer = require('buffer/').Buffer;
 // const fetch = require('node-fetch')
 // const hash = require('hash-wasm')
 
-class IonProofOfWork {
+export default class IonProofOfWork {
     static randomHexString() {
         const size = Math.floor(Math.random() * Math.floor(500));
         const randomString = [...Array(size)].map(() => Math.floor(Math.random() * 16).toString(16)).join('');
@@ -85,46 +85,3 @@ class IonProofOfWork {
         };
     }
 }
-
-
-const body = {
-    "type": "create",
-    "suffixData": {
-      "deltaHash": "EiCLyPswSvuw986FoTQd4jZ-Qv_pg1N07-DtoY0v6NmSfg",
-      "recoveryCommitment": "EiB27xMKUNiMuHKtUvVrpXcZP5dGgABqRHNN-HSH4_K9Gw"
-    },
-    "delta": {
-      "updateCommitment": "EiCQ2-uDv1_j5BhcmnM7p96E02CbIJaqT3QFtjCAy8K_Iw",
-      "patches": [
-        {
-          "action": "replace",
-          "document": {
-            "publicKeys": [
-              {
-                "id": "integrationTestKey",
-                "type": "EcdsaSecp256k1VerificationKey2019",
-                "publicKeyJwk": {
-                  "kty": "EC",
-                  "crv": "secp256k1",
-                  "x": "RylkQeOBYJVpRdZ7YSPKHFD4DWIcFCD9NfBPSTX3rio",
-                  "y": "nst5yUGomljMpWqzxWP3eKC02RrMfdd3elphTktInUQ"
-                },
-                "purposes": [
-                  "authentication"
-                ]
-              }
-            ],
-            "services": [
-              {
-                "id": "integrationTestService",
-                "type": "website",
-                "serviceEndpoint": "https://www.some.web.site.com"
-              }
-            ]
-          }
-        }
-      ]
-    }
-  }
-
-IonProofOfWork.submitIonRequestUntilSuccess('https://beta.ion.msidentity.com/api/v1.0/proof-of-work-challenge', 'https://beta.ion.msidentity.com/api/v1.0/register', JSON.stringify(body));
