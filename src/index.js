@@ -62,7 +62,6 @@ class IonProofOfWork {
             method: 'POST',
             body: requestBody,
             headers: {
-                'access-control-allow-headers': '*',
                 'challenge-nonce': challengeNonce,
                 'answer-nonce': answerNonce,
                 'content-type': 'application/json'
