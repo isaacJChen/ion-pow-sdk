@@ -1,10 +1,8 @@
-import * as fetch from 'node-fetch/browser';
-import * as hash from  'hash-wasm';
+const fetch = require ('node-fetch/browser');
+const hash =  require('hash-wasm');
 
 
 const buffer = require('buffer/').Buffer;
-// const fetch = require('node-fetch')
-// const hash = require('hash-wasm')
 
 export default class IonProofOfWork {
     static randomHexString() {
