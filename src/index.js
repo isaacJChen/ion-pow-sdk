@@ -1,4 +1,4 @@
-const fetch = require ('node-fetch/browser');
+const fetch = require ('node-fetch');
 const hash =  require('hash-wasm');
 
 
