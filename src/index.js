@@ -20,7 +20,9 @@ module.exports = class IonProofOfWork {
 
     static async submitIonRequest(getChallengeUri, solveChallengeUri, requestBody) {
         console.log(`Getting challenge from: ${getChallengeUri}`);
-        const getChallengeResponse = await fetch(getChallengeUri);
+        const getChallengeResponse = await fetch(getChallengeUri, {
+            mode: 'cors'
+        });
         if (!getChallengeResponse.ok) {
             throw new Error('Get challenge service not available')
         }
