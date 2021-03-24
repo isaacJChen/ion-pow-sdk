@@ -1,4 +1,4 @@
-const fetch = require ('node-fetch');
+const fetch = require('cross-fetch');
 const hash =  require('hash-wasm');
 
 
@@ -58,11 +58,13 @@ module.exports = class IonProofOfWork {
         console.log('3')
         const response = await fetch(solveChallengeUri, {
             method: 'POST',
+            mode: 'cors',
             body: requestBody,
             headers: {
                 'challenge-nonce': challengeNonce,
                 'answer-nonce': answerNonce,
-                'content-type': 'application/json'
+                'content-type': 'application/json',
+                'access-control-allow-headers': '*'
             }
         });
 
