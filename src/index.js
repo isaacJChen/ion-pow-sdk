@@ -63,9 +63,9 @@ module.exports = class IonProofOfWork {
             mode: 'cors',
             body: requestBody,
             headers: {
-                'challenge-nonce': challengeNonce,
-                'answer-nonce': answerNonce,
-                'content-type': 'application/json'
+                'Challenge-Nonce': challengeNonce,
+                'Answer-Nonce': answerNonce,
+                'Content-Type': 'application/json'
             }
         });
 
