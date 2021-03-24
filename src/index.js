@@ -66,7 +66,7 @@ module.exports = class IonProofOfWork {
                 'challenge-nonce': challengeNonce,
                 'answer-nonce': answerNonce,
                 'content-type': 'application/json',
-                'access-control-allow-headers': '*'
+                'access-control-allow-headers': 'challenge-nonce, answer-nonce, content-type'
             }
         });
 
