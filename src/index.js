@@ -49,6 +49,14 @@ module.exports = class IonProofOfWork {
                 hashLength: 32, // output size = 32 bytes
                 outputType: 'hex',
             });
+            /**
+             * Using setTimeout(() =>{}, 0) is a tricky way to get the NodeJS process 
+             * to treat each do-while loop as a discrete event within the event process.
+             * This allows us to be able to unblock the thread without needing to deal 
+             * with threading or NodeJS workers which are more complicated and lock this
+             * library into a specific JS environment it can run in.
+             */
+            setTimeout(() => {}, 0);
             console.log(answerHash);
             console.log(largestAllowedHash);
         } while (answerHash > largestAllowedHash && Date.now() - startTime < validDuration);
